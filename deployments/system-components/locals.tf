@@ -33,29 +33,18 @@ locals {
         repository           = "oci://ghcr.io/kserve/charts"
         chart                = "kserve"
         chart_version        = "v0.16.0"
-        values = [
-            {
-                name  = "kserve.controller.deploymentMode"
-                value = "Standard"
-            },
-            {
-                name  = "kserve.storage.resources.requests.cpu"
-                value = "100m"
-            },
-            {
-                name  = "kserve.storage.resources.requests.memory"
-                value = "2Gi"
-            },
-            {
-                name  = "kserve.storage.resources.limits.cpu"
-                value = "1"
-            },
-            {
-                name  = "kserve.storage.resources.limits.memory"
-                value = "8Gi"
-            }
-        ]
+        
+        values      = []
+        values_file = "values/kserve.yaml"
+    }
 
+    envoy_proxy = {
+        release_name         = "envoy-proxy"
+        namespace            = "envoy-gateway-system"
+        repository           = "oci://docker.io/envoyproxy"
+        chart                = "gateway-helm"
+        chart_version        = "v0.0.0-latest"
+        values = []
     }
 
     ai_gateway = {
@@ -68,60 +57,13 @@ locals {
     }
 
     qdrant = {
+        release_name         = "qdrant"
+        namespace            = "qdrant"
+        repository           = "https://qdrant.github.io/qdrant-helm"
+        chart                = "qdrant"
+        chart_version        = "1.16.3"
 
-        values = [
-            {
-                name  = "replicaCount"
-                value = "3"
-            },
-            {
-              name  = "resources.requests.cpu"
-              value = "2"
-            },
-            {
-              name  = "resources.requests.memory"
-              value = "12Gi"
-            },
-            {
-              name  = "resources.limits.cpu"
-              value = "4"
-            },
-            {
-              name  = "resources.limits.memory"
-              value = "24Gi"
-            },
-            {
-              name  = "persistence.enabled"
-              value = "true"
-            },
-            {
-              name  = "persistence.size"
-              value = "30Gi"
-            },
-            {
-              name  = "podDisruptionBudget.enabled"
-              value = "true"
-            },
-            {
-              name  = "podDisruptionBudget.maxUnavailable"
-              value = "1"
-            },
-            {
-              name  = "affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight"
-              value = "100"
-            },
-            {
-              name  = "affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey"
-              value = "kubernetes.io/hostname"
-            },
-            {
-              name  = "affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.labelSelector.matchLabels.app\\.kubernetes\\.io/name"
-              value = "qdrant"
-            },
-            {
-              name  = "config.cluster.enabled"
-              value = "true"
-            }
-]
+        values      = []
+        values_file = "values/qdrant.yaml"
     }
 }

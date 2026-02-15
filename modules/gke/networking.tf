@@ -1,12 +1,12 @@
 module "vpc" {
-    source       = "terraform-google-modules/network/google"
-    version      = "15.2.0"
-    project_id   = local.project_id
-    network_name = local.vpc_name
-    routing_mode = "GLOBAL"
+  source       = "terraform-google-modules/network/google"
+  version      = "15.2.0"
+  project_id   = local.project_id
+  network_name = local.vpc_name
+  routing_mode = "GLOBAL"
 
-    subnets          = local.subnets
-    secondary_ranges = local.secondary_ranges
+  subnets          = local.subnets
+  secondary_ranges = local.secondary_ranges
 }
 
 resource "random_string" "router_suffix" {

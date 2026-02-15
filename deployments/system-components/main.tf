@@ -25,6 +25,17 @@ resource "helm_release" "ai_gateway_crds" {
     version          = "v0.0.0-latest"
 }
 
+resource "helm_release" "envoy_proxy" {
+    name             = local.envoy_proxy.release_name
+    namespace        = local.envoy_proxy.namespace
+    repository       = local.envoy_proxy.repository != "" ? local.envoy_proxy.repository : null
+    chart            = local.envoy_proxy.chart
+    version          = local.envoy_proxy.chart_version != "" ? local.envoy_proxy.chart_version : null
+    create_namespace = true
+
+    set    = local.ai_gateway.values
+}
+
 resource "helm_release" "ai_gateway" {
     name             = local.ai_gateway.release_name
     namespace        = local.ai_gateway.namespace
@@ -35,7 +46,7 @@ resource "helm_release" "ai_gateway" {
 
     set    = local.ai_gateway.values
 
-    depends_on = [ helm_release.ai_gateway_crds ]
+    depends_on = [ helm_release.ai_gateway_crds, helm_release.envoy_proxy ]
 }
 
 resource "helm_release" "keda" {
@@ -58,66 +69,24 @@ resource "helm_release" "kserve" {
     create_namespace = true
 
     set    = local.kserve.values
-    
-    depends_on = [ helm_release.kserve_crds, helm_release.keda, helm_release.ai_gateway ]
+    values = [
+        file(local.kserve.values_file)
+    ]
+
+    depends_on = [ helm_release.kserve_crds, helm_release.keda, helm_release.ai_gateway, helm_release.cert_manager ]
 }
 
 resource "helm_release" "qdrant" {
     
-    name             = local.kserve.release_name
-    namespace        = local.kserve.namespace
-    repository       = local.kserve.repository != "" ? local.kserve.repository : null
-    chart            = local.kserve.chart
-    version          = local.kserve.chart_version != "" ? local.kserve.chart_version : null
+    name             = local.qdrant.release_name
+    namespace        = local.qdrant.namespace
+    repository       = local.qdrant.repository != "" ? local.qdrant.repository : null
+    chart            = local.qdrant.chart
+    version          = local.qdrant.chart_version != "" ? local.qdrant.chart_version : null
     create_namespace = true
     
-    set    = local.kserve.values
-
-  values = [
-    yamlencode({
-
-      replicaCount = 3
-
-      resources = {
-        requests = {
-          cpu    = "2"
-          memory = "12Gi"
-        }
-        limits = {
-          cpu    = "4"
-          memory = "24Gi"
-        }
-      }
-
-      persistence = {
-        enabled = true
-        size    = "30Gi"
-      }
-
-      podDisruptionBudget = {
-        enabled        = true
-        maxUnavailable = 1
-      }
-
-      affinity = {
-        podAntiAffinity = {
-          preferredDuringSchedulingIgnoredDuringExecution = [{
-            weight = 100
-            podAffinityTerm = {
-              topologyKey = "kubernetes.io/hostname"
-              labelSelector = {
-                matchLabels = { "app.kubernetes.io/name" = "qdrant" }
-              }
-            }
-          }]
-        }
-      }
-
-      config = {
-        cluster = {
-          enabled = true
-        }
-      }
-    })
-  ]
+    set    = local.qdrant.values
+    values = [
+        file(local.qdrant.values_file)
+    ]
 }
