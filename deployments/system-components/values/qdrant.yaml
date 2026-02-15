@@ -1,0 +1,36 @@
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "2"
+    memory: "12Gi"
+  limits:
+    memory: "16Gi"
+
+persistence:
+  enabled: true
+  size: 30Gi
+
+podDisruptionBudget:
+  enabled: false
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: app.mukinabaht.com/name
+              operator: In
+              values:
+                - qdrant
+
+
+tolerations:
+- key: "app.mukinabaht.com/name"
+  value: "qdrant"
+  operator: "Equal"
+  effect: "NoSchedule"
+
+config:
+  cluster:
+    enabled: false

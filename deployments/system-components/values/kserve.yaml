@@ -1,0 +1,12 @@
+kserve:
+  controller:
+    deploymentMode: Standard
+
+  storage:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 2Gi
+      limits:
+        cpu: "1"
+        memory: 8Gi
