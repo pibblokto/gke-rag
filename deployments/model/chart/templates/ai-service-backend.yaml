@@ -1,0 +1,16 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIServiceBackend
+metadata:
+  name: ai-backend-service-{{ .Values.modelName }}
+  namespace: ai-gateway
+spec:
+  schema:
+    name: OpenAI
+  backendRef:
+    name: {{ .Values.modelName }}-predictor
+    namespace: using-system-models
+    kind: Service
+    group: ""
+    port: 80
+  timeouts:
+    request: 300s

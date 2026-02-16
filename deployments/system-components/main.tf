@@ -76,6 +76,19 @@ resource "helm_release" "kserve" {
     depends_on = [ helm_release.kserve_crds, helm_release.keda, helm_release.ai_gateway, helm_release.cert_manager ]
 }
 
+resource "helm_release" "gateway_infra" {
+    name             = local.gateway_infra.release_name
+    namespace        = local.gateway_infra.namespace
+    repository       = local.gateway_infra.repository != "" ? local.gateway_infra.repository : null
+    chart            = local.gateway_infra.chart
+    version          = local.gateway_infra.chart_version != "" ? local.gateway_infra.chart_version : null
+    create_namespace = true
+
+    set    = local.gateway_infra.values
+
+    depends_on = [ helm_release.ai_gateway ]
+}
+
 resource "helm_release" "qdrant" {
     
     name             = local.qdrant.release_name

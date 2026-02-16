@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: mock-email@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod-account-key
+    solvers:
+    - http01:
+        gatewayHTTPRoute:
+          parentRefs:
+            - name: envoy-ai-gateway
+              namespace: ai-gateway
+              kind: Gateway
+              group: gateway.networking.k8s.io

@@ -30,7 +30,7 @@ locals {
   node_pools   = [
     {
       name               = "primary-node-pool"
-      machine_type       = "e2-standard-2"
+      machine_type       = "e2-standard-4"
       min_count          = 1
       max_count          = 3
       local_ssd_count    = 0

@@ -56,6 +56,15 @@ locals {
         values = []
     }
 
+    gateway_infra = {
+        release_name         = "gateway-infra"
+        namespace            = "ai-gateway"
+        repository           = "charts/"
+        chart                = "gateway-infra"
+        chart_version        = "0.0.1"
+        values = []
+    }
+
     qdrant = {
         release_name         = "qdrant"
         namespace            = "qdrant"

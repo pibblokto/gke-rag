@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gateway-infra
+description: A Helm chart for Gateway, GatewayClass and ClusterIssuer
+
+type: application
+
+version: 0.0.1
