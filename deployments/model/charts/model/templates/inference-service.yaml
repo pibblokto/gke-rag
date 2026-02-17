@@ -8,6 +8,9 @@ metadata:
 spec:
   predictor:
     model:
+      env:
+      - name: KSERVE_OPENAI_ROUTE_PREFIX
+        value: ""
       modelFormat:
         name: huggingface
       args:

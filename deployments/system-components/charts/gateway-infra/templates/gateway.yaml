@@ -18,3 +18,10 @@ spec:
     allowedRoutes:
       namespaces:
         from: Same
+  - name: http
+    hostname: {{ .Values.domain }}
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: Same

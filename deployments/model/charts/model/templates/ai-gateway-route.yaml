@@ -4,6 +4,8 @@ metadata:
   name: envoy-ai-gateway-{{ .Values.modelName }}-route
   namespace: ai-gateway
 spec:
+  hostnames:
+  - {{ .Values.domain }}
   schema:
     name: OpenAI
   parentRefs:

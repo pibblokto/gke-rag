@@ -4,15 +4,13 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: mock-email@example.com
+    email: mock-email@mukinabaht.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-prod-account-key
     solvers:
-    - http01:
-        gatewayHTTPRoute:
-          parentRefs:
-            - name: envoy-ai-gateway
-              namespace: ai-gateway
-              kind: Gateway
-              group: gateway.networking.k8s.io
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: cloudflare-api-key
+            key: apiToken

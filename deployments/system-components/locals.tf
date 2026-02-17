@@ -28,14 +28,25 @@ locals {
     }
 
     kserve = {
-        release_name         = "kserve"
-        namespace            = "kserve"
-        repository           = "oci://ghcr.io/kserve/charts"
-        chart                = "kserve"
-        chart_version        = "v0.16.0"
+        release_name  = "kserve"
+        namespace     = "kserve"
+        repository    = "oci://ghcr.io/kserve/charts"
+        chart         = "kserve"
+        chart_version = "v0.16.0"
         
         values      = []
         values_file = "values/kserve.yaml"
+    }
+
+    external_dns = {
+        release_name  = "external-dns"
+        namespace     = "ai-gateway"
+        repository    = "https://kubernetes-sigs.github.io/external-dns/"
+        chart         = "external-dns"
+        chart_version = "1.20.0"
+        
+        values      = []
+        values_file = "values/external-dns.yaml"
     }
 
     envoy_proxy = {
@@ -44,7 +55,16 @@ locals {
         repository           = "oci://docker.io/envoyproxy"
         chart                = "gateway-helm"
         chart_version        = "v0.0.0-latest"
-        values = []
+        values = [
+            {
+                name  = "extensionApis.enableBackend"
+                value = true
+            },
+            {
+                name  = "extensionApis.enableEnvoyPatchPolicy"
+                value = true
+            },
+        ]
     }
 
     ai_gateway = {
@@ -62,7 +82,12 @@ locals {
         repository           = "charts/"
         chart                = "gateway-infra"
         chart_version        = "0.0.1"
-        values = []
+        values = [
+            {
+                name  = "cloudflare.apiToken"
+                value = var.cloudflare_token
+            },
+        ]
     }
 
     qdrant = {

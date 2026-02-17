@@ -3,6 +3,6 @@ terraform {
 
   backend "gcs" {
     bucket = "sandbox-pblkt-tf-state"
-    prefix = "rag/system-components/piblokto-sandbox-gke-deployment.tfstate"
+    prefix = "rag/model/piblokto-sandbox-gke-deployment.tfstate"
   }
 }
