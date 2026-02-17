@@ -1,0 +1,19 @@
+provider:
+  name: cloudflare
+
+sources:
+  - gateway-httproute
+
+domainFilters:
+  - mukinabaht.com
+
+registry: txt
+txtOwnerId: ai-gateway
+policy: upsert-only
+
+env:
+- name: CF_API_TOKEN
+  valueFrom:
+    secretKeyRef:
+      name: cloudflare-api-key
+      key: apiToken

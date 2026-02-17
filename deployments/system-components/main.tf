@@ -6,7 +6,21 @@ resource "helm_release" "cert_manager" {
   version          = local.cert_manager.chart_version != "" ? local.cert_manager.chart_version : null
   create_namespace = true
 
-  set    = local.cert_manager.values
+  set = local.cert_manager.values
+}
+
+resource "helm_release" "external_dns" {
+  name             = local.external_dns.release_name
+  namespace        = local.external_dns.namespace
+  repository       = local.external_dns.repository != "" ? local.external_dns.repository : null
+  chart            = local.external_dns.chart
+  version          = local.external_dns.chart_version != "" ? local.external_dns.chart_version : null
+  create_namespace = true
+  
+  set    = local.external_dns.values
+  values = [file(local.external_dns.values_file)]
+
+  depends_on = [ helm_release.gateway_infra ]
 }
 
 resource "helm_release" "kserve_crds" {
@@ -33,7 +47,7 @@ resource "helm_release" "envoy_proxy" {
     version          = local.envoy_proxy.chart_version != "" ? local.envoy_proxy.chart_version : null
     create_namespace = true
 
-    set    = local.ai_gateway.values
+    set = local.ai_gateway.values
 }
 
 resource "helm_release" "ai_gateway" {
@@ -44,7 +58,7 @@ resource "helm_release" "ai_gateway" {
     version          = local.ai_gateway.chart_version != "" ? local.ai_gateway.chart_version : null
     create_namespace = true
 
-    set    = local.ai_gateway.values
+    set = local.ai_gateway.values
 
     depends_on = [ helm_release.ai_gateway_crds, helm_release.envoy_proxy ]
 }
@@ -57,7 +71,7 @@ resource "helm_release" "keda" {
     version          = local.keda.chart_version != "" ? local.keda.chart_version : null
     create_namespace = true
 
-    set    = local.keda.values
+    set = local.keda.values
 }
 
 resource "helm_release" "kserve" {
@@ -76,8 +90,20 @@ resource "helm_release" "kserve" {
     depends_on = [ helm_release.kserve_crds, helm_release.keda, helm_release.ai_gateway, helm_release.cert_manager ]
 }
 
+resource "helm_release" "gateway_infra" {
+    name             = local.gateway_infra.release_name
+    namespace        = local.gateway_infra.namespace
+    repository       = local.gateway_infra.repository != "" ? local.gateway_infra.repository : null
+    chart            = local.gateway_infra.chart
+    version          = local.gateway_infra.chart_version != "" ? local.gateway_infra.chart_version : null
+    create_namespace = true
+
+    set = local.gateway_infra.values
+
+    depends_on = [ helm_release.kserve ]
+}
+
 resource "helm_release" "qdrant" {
-    
     name             = local.qdrant.release_name
     namespace        = local.qdrant.namespace
     repository       = local.qdrant.repository != "" ? local.qdrant.repository : null
@@ -86,7 +112,5 @@ resource "helm_release" "qdrant" {
     create_namespace = true
     
     set    = local.qdrant.values
-    values = [
-        file(local.qdrant.values_file)
-    ]
+    values = [file(local.qdrant.values_file)]
 }

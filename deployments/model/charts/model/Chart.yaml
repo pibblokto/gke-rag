@@ -1,0 +1,9 @@
+apiVersion: v2
+name: model
+description: A Helm chart for Kserve/Envoy Gateway resources
+
+type: application
+
+version: 0.0.1
+
+appVersion: "0.0.1"
