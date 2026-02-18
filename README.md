@@ -56,9 +56,9 @@ terraform apply
 
 ## Important Operational Points
 
-- State is stored in GCS (`sandbox-pblkt-tf-state`) with separate prefixes per stack.
-- `deployments/system-components` requires `var.cloudflare_token` for DNS and certificate automation.
-- Current configuration is zonal (`us-central1-c`) and uses hardcoded project/region defaults in locals/providers.
+- State is stored in GCS (`sandbox-pblkt-tf-state`) with separate prefixes per stack. Use your bucket for remote state.
+- `deployments/system-components` requires `var.cloudflare_token` for DNS and certificate automation. Token should allow to edit your dns zone.
+- Current configuration is zonal (`us-central1-c`) and uses hardcoded project/region defaults in locals/providers. Update project/location to use yours instead.
 - `system-components` and `model` depend on `cluster` remote state availability before planning/applying.
 - GKE module creates a dedicated `qdrant-node-pool` with a taint and label for workload placement.
 
