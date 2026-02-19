@@ -8,7 +8,7 @@ This repository splits infrastructure into three Terraform stacks so provisionin
 
 1. `cluster`: network + Kubernetes foundation.
 2. `system-components`: cluster-level operators and shared platform services.
-3. `model`: application/model-facing workloads and gateway routes.
+3. `model`: application/model-facing workloads and ingress routes.
 
 The deployment model is "foundation first, platform second, workloads last".
 

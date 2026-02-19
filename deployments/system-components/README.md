@@ -12,7 +12,7 @@ This stack prepares the platform layer used by workloads and APIs:
 - Traefik
 - external-dns
 - Qdrant
-- custom `gateway-infra` chart
+- custom `traefik-infra` chart
 
 ## Important Notes
 
@@ -48,7 +48,7 @@ No modules.
 |------|------|
 | [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.external_dns](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.gateway_infra](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.traefik_infra](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.keda](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.kserve](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.kserve_crds](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |

@@ -20,7 +20,7 @@ resource "helm_release" "external_dns" {
   set    = local.external_dns.values
   values = [file(local.external_dns.values_file)]
 
-  depends_on = [helm_release.gateway_infra]
+  depends_on = [helm_release.traefik_infra]
 }
 
 resource "helm_release" "kserve_crds" {
@@ -68,15 +68,15 @@ resource "helm_release" "kserve" {
   depends_on = [helm_release.kserve_crds, helm_release.keda, helm_release.cert_manager]
 }
 
-resource "helm_release" "gateway_infra" {
-  name             = local.gateway_infra.release_name
-  namespace        = local.gateway_infra.namespace
-  repository       = local.gateway_infra.repository != "" ? local.gateway_infra.repository : null
-  chart            = local.gateway_infra.chart
-  version          = local.gateway_infra.chart_version != "" ? local.gateway_infra.chart_version : null
+resource "helm_release" "traefik_infra" {
+  name             = local.traefik_infra.release_name
+  namespace        = local.traefik_infra.namespace
+  repository       = local.traefik_infra.repository != "" ? local.traefik_infra.repository : null
+  chart            = local.traefik_infra.chart
+  version          = local.traefik_infra.chart_version != "" ? local.traefik_infra.chart_version : null
   create_namespace = true
 
-  set = local.gateway_infra.values
+  set = local.traefik_infra.values
 
   depends_on = [helm_release.kserve]
 }

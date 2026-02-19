@@ -40,7 +40,7 @@ locals {
 
   external_dns = {
     release_name  = "external-dns"
-    namespace     = "ai-gateway"
+    namespace     = "traefik"
     repository    = "https://kubernetes-sigs.github.io/external-dns/"
     chart         = "external-dns"
     chart_version = "1.20.0"
@@ -63,11 +63,11 @@ locals {
     ]
   }
 
-  gateway_infra = {
-    release_name  = "gateway-infra"
-    namespace     = "ai-gateway"
+  traefik_infra = {
+    release_name  = "traefik-infra"
+    namespace     = "traefik"
     repository    = "charts/"
-    chart         = "gateway-infra"
+    chart         = "traefik-infra"
     chart_version = "0.0.1"
     values = [
       {

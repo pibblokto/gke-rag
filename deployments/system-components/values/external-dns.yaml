@@ -8,7 +8,7 @@ domainFilters:
   - mukinabaht.com
 
 registry: txt
-txtOwnerId: ai-gateway
+txtOwnerId: traefik
 policy: upsert-only
 
 env:
