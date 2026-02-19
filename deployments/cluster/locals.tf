@@ -27,34 +27,34 @@ locals {
   # GKE confing
   cluster_name = "primary-sandbox-cluster"
   zones        = ["${local.nat_region}-c"]
-  node_pools   = [
+  node_pools = [
     {
-      name               = "primary-node-pool"
-      machine_type       = "e2-standard-4"
-      min_count          = 1
-      max_count          = 3
-      local_ssd_count    = 0
-      disk_size_gb       = 40
-      disk_type          = "pd-standard"
-      image_type         = "COS_CONTAINERD"
-      enable_gcfs        = false
-      auto_repair        = true
-      auto_upgrade       = true
-      preemptible        = false
+      name            = "primary-node-pool"
+      machine_type    = "e2-standard-4"
+      min_count       = 1
+      max_count       = 3
+      local_ssd_count = 0
+      disk_size_gb    = 40
+      disk_type       = "pd-standard"
+      image_type      = "COS_CONTAINERD"
+      enable_gcfs     = false
+      auto_repair     = true
+      auto_upgrade    = true
+      preemptible     = false
     },
     {
-      name               = "qdrant-node-pool"
-      machine_type       = "e2-standard-4"
-      min_count          = 1
-      max_count          = 1
-      local_ssd_count    = 0
-      disk_size_gb       = 50
-      disk_type          = "pd-standard"
-      image_type         = "COS_CONTAINERD"
-      enable_gcfs        = false
-      auto_repair        = true
-      auto_upgrade       = true
-      preemptible        = false 
+      name            = "qdrant-node-pool"
+      machine_type    = "e2-standard-4"
+      min_count       = 1
+      max_count       = 1
+      local_ssd_count = 0
+      disk_size_gb    = 50
+      disk_type       = "pd-standard"
+      image_type      = "COS_CONTAINERD"
+      enable_gcfs     = false
+      auto_repair     = true
+      auto_upgrade    = true
+      preemptible     = false
     },
   ]
 }

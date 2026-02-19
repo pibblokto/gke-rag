@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: cloudflare-api-key
-  namespace: ai-gateway
+  namespace: traefik
 type: Opaque
 data:
   apiToken: {{ required "cloudflare.apiToken is required" .Values.cloudflare.apiToken | toString | b64enc | quote }}

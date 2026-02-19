@@ -2,13 +2,13 @@ provider:
   name: cloudflare
 
 sources:
-  - gateway-httproute
+  - traefik-proxy
 
 domainFilters:
   - mukinabaht.com
 
 registry: txt
-txtOwnerId: ai-gateway
+txtOwnerId: traefik
 policy: upsert-only
 
 env:

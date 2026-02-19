@@ -1,6 +1,6 @@
 # gke-rag
 
-RAG platform on Google Kubernetes Engine (GKE), with KServe for model serving, Qdrant for vector storage, and Envoy AI Gateway for ingress and routing.
+RAG platform on Google Kubernetes Engine (GKE), with KServe for model serving, Qdrant for vector storage, and Traefik for ingress and routing.
 
 ## Core Idea
 
@@ -8,7 +8,7 @@ This repository splits infrastructure into three Terraform stacks so provisionin
 
 1. `cluster`: network + Kubernetes foundation.
 2. `system-components`: cluster-level operators and shared platform services.
-3. `model`: application/model-facing workloads and gateway routes.
+3. `model`: application/model-facing workloads and ingress routes.
 
 The deployment model is "foundation first, platform second, workloads last".
 
@@ -16,7 +16,7 @@ The deployment model is "foundation first, platform second, workloads last".
 
 - `modules/gke`: reusable Terraform module that creates VPC, subnet secondary ranges, Cloud NAT, and a private GKE cluster.
 - `deployments/cluster`: instantiates `modules/gke` with environment-specific values.
-- `deployments/system-components`: installs cert-manager, KServe, KEDA, Envoy AI Gateway, external-dns, and Qdrant.
+- `deployments/system-components`: installs cert-manager, KServe, KEDA, Traefik, external-dns, and Qdrant.
 - `deployments/model`: deploys the model Helm chart and related service objects.
 
 ```mermaid
@@ -25,10 +25,10 @@ flowchart TD
     B --> C[deployments/system-components]
     C --> D[cert-manager]
     C --> E[KServe + KEDA]
-    C --> F[Envoy AI Gateway + external-dns]
+    C --> F[Traefik + external-dns]
     C --> G[Qdrant]
     B --> H[deployments/model]
-    H --> I[Model Helm Release + AI Gateway Routes]
+    H --> I[Model Helm Release + IngressRoutes]
 ```
 
 ## How It Works

@@ -1,10 +1,9 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: envoy-ai-gateway-cert
-  namespace: ai-gateway
+  name: {{ .Values.modelName }}-predictor-cert
 spec:
-  secretName: envoy-ai-gateway-tls
+  secretName: {{ .Values.modelName }}-predictor-tls
   dnsNames:
     - {{ .Values.domain }}
   issuerRef:

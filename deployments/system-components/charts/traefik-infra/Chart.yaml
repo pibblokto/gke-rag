@@ -1,0 +1,7 @@
+apiVersion: v2
+name: traefik-infra
+description: A Helm chart for platform ingress TLS and DNS secrets
+
+type: application
+
+version: 0.0.1

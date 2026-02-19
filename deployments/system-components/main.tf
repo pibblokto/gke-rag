@@ -16,101 +16,79 @@ resource "helm_release" "external_dns" {
   chart            = local.external_dns.chart
   version          = local.external_dns.chart_version != "" ? local.external_dns.chart_version : null
   create_namespace = true
-  
+
   set    = local.external_dns.values
   values = [file(local.external_dns.values_file)]
 
-  depends_on = [ helm_release.gateway_infra ]
+  depends_on = [helm_release.traefik_infra]
 }
 
 resource "helm_release" "kserve_crds" {
-  name             = "kserve-crd"
-  chart            = "kserve-crd"
-  repository       = "oci://ghcr.io/kserve/charts"
-  version          = "v0.16.0"
+  name       = "kserve-crd"
+  chart      = "kserve-crd"
+  repository = "oci://ghcr.io/kserve/charts"
+  version    = "v0.16.0"
 }
 
-resource "helm_release" "ai_gateway_crds" {
-    name             = "ai-gateway-crd"
-    chart            = "ai-gateway-crds-helm"
-    namespace        = "envoy-ai-gateway-system"
-    create_namespace = true
-    repository       = "oci://docker.io/envoyproxy"
-    version          = "v0.0.0-latest"
-}
+resource "helm_release" "traefik" {
+  name             = local.traefik.release_name
+  namespace        = local.traefik.namespace
+  repository       = local.traefik.repository != "" ? local.traefik.repository : null
+  chart            = local.traefik.chart
+  version          = local.traefik.chart_version != "" ? local.traefik.chart_version : null
+  create_namespace = true
 
-resource "helm_release" "envoy_proxy" {
-    name             = local.envoy_proxy.release_name
-    namespace        = local.envoy_proxy.namespace
-    repository       = local.envoy_proxy.repository != "" ? local.envoy_proxy.repository : null
-    chart            = local.envoy_proxy.chart
-    version          = local.envoy_proxy.chart_version != "" ? local.envoy_proxy.chart_version : null
-    create_namespace = true
-
-    set = local.ai_gateway.values
-}
-
-resource "helm_release" "ai_gateway" {
-    name             = local.ai_gateway.release_name
-    namespace        = local.ai_gateway.namespace
-    repository       = local.ai_gateway.repository != "" ? local.ai_gateway.repository : null
-    chart            = local.ai_gateway.chart
-    version          = local.ai_gateway.chart_version != "" ? local.ai_gateway.chart_version : null
-    create_namespace = true
-
-    set = local.ai_gateway.values
-
-    depends_on = [ helm_release.ai_gateway_crds, helm_release.envoy_proxy ]
+  set = local.traefik.values
 }
 
 resource "helm_release" "keda" {
-    name             = local.keda.release_name
-    namespace        = local.keda.namespace
-    repository       = local.keda.repository != "" ? local.keda.repository : null
-    chart            = local.keda.chart
-    version          = local.keda.chart_version != "" ? local.keda.chart_version : null
-    create_namespace = true
+  name             = local.keda.release_name
+  namespace        = local.keda.namespace
+  repository       = local.keda.repository != "" ? local.keda.repository : null
+  chart            = local.keda.chart
+  version          = local.keda.chart_version != "" ? local.keda.chart_version : null
+  create_namespace = true
 
-    set = local.keda.values
+  set = local.keda.values
 }
 
 resource "helm_release" "kserve" {
-    name             = local.kserve.release_name
-    namespace        = local.kserve.namespace
-    repository       = local.kserve.repository != "" ? local.kserve.repository : null
-    chart            = local.kserve.chart
-    version          = local.kserve.chart_version != "" ? local.kserve.chart_version : null
-    create_namespace = true
+  name             = local.kserve.release_name
+  namespace        = local.kserve.namespace
+  repository       = local.kserve.repository != "" ? local.kserve.repository : null
+  chart            = local.kserve.chart
+  version          = local.kserve.chart_version != "" ? local.kserve.chart_version : null
+  create_namespace = true
 
-    set    = local.kserve.values
-    values = [
-        file(local.kserve.values_file)
-    ]
+  set = local.kserve.values
+  values = [
+    file(local.kserve.values_file)
+  ]
 
-    depends_on = [ helm_release.kserve_crds, helm_release.keda, helm_release.ai_gateway, helm_release.cert_manager ]
+  depends_on = [helm_release.kserve_crds, helm_release.keda, helm_release.cert_manager]
 }
 
-resource "helm_release" "gateway_infra" {
-    name             = local.gateway_infra.release_name
-    namespace        = local.gateway_infra.namespace
-    repository       = local.gateway_infra.repository != "" ? local.gateway_infra.repository : null
-    chart            = local.gateway_infra.chart
-    version          = local.gateway_infra.chart_version != "" ? local.gateway_infra.chart_version : null
-    create_namespace = true
+resource "helm_release" "traefik_infra" {
+  name             = local.traefik_infra.release_name
+  namespace        = local.traefik_infra.namespace
+  repository       = local.traefik_infra.repository != "" ? local.traefik_infra.repository : null
+  chart            = local.traefik_infra.chart
+  version          = local.traefik_infra.chart_version != "" ? local.traefik_infra.chart_version : null
+  create_namespace = true
 
-    set = local.gateway_infra.values
+  set = local.traefik_infra.values
 
-    depends_on = [ helm_release.kserve ]
+  depends_on = [helm_release.kserve]
 }
 
 resource "helm_release" "qdrant" {
-    name             = local.qdrant.release_name
-    namespace        = local.qdrant.namespace
-    repository       = local.qdrant.repository != "" ? local.qdrant.repository : null
-    chart            = local.qdrant.chart
-    version          = local.qdrant.chart_version != "" ? local.qdrant.chart_version : null
-    create_namespace = true
-    
-    set    = local.qdrant.values
-    values = [file(local.qdrant.values_file)]
+  name             = local.qdrant.release_name
+  namespace        = local.qdrant.namespace
+  repository       = local.qdrant.repository != "" ? local.qdrant.repository : null
+  chart            = local.qdrant.chart
+  version          = local.qdrant.chart_version != "" ? local.qdrant.chart_version : null
+  create_namespace = true
+
+  set    = local.qdrant.values
+  values = [file(local.qdrant.values_file)]
 }

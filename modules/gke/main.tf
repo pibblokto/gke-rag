@@ -18,7 +18,6 @@ module "gke" {
   deletion_protection        = false
   initial_node_count         = 1
   remove_default_node_pool   = true
-  gateway_api_channel        = "CHANNEL_STANDARD"
   node_pools                 = local.node_pools
 
   node_pools_oauth_scopes = {

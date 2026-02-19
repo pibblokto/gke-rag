@@ -5,7 +5,7 @@ resource "helm_release" "model" {
   chart            = local.model.chart
   version          = local.model.chart_version != "" ? local.model.chart_version : null
   create_namespace = true
-  
+
   set = local.model.values
 
 }
