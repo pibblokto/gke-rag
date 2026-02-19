@@ -1,6 +1,6 @@
 apiVersion: v2
 name: model
-description: A Helm chart for Kserve/Envoy Gateway resources
+description: A Helm chart for KServe and Traefik ingress resources
 
 type: application
 

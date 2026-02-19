@@ -1,2 +1,4 @@
 modelName: bge-m3
 domain: embd.mukinabaht.com
+ingressNamespace: ai-gateway
+tlsSecretName: ai-gateway-tls

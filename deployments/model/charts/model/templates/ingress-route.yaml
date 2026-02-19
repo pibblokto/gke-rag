@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Values.modelName }}-ingress-route
+  namespace: {{ .Values.ingressNamespace }}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.domain | quote }}
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`{{ .Values.domain }}`) && Headers(`x-ai-eg-model`, `{{ .Values.modelName }}`)
+    services:
+    - name: {{ .Values.modelName }}-predictor
+      namespace: {{ .Release.Namespace }}
+      port: 80
+  tls:
+    secretName: {{ .Values.tlsSecretName }}

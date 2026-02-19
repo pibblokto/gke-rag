@@ -4,18 +4,18 @@ variable "project_id" {
 }
 variable "node_pools" {
   type = list(object({
-    name               = string
-    machine_type       = string
-    min_count          = number
-    max_count          = number
-    local_ssd_count    = number
-    disk_size_gb       = number
-    disk_type          = string
-    image_type         = string
-    enable_gcfs        = bool
-    auto_repair        = bool
-    auto_upgrade       = bool
-    preemptible        = bool
+    name            = string
+    machine_type    = string
+    min_count       = number
+    max_count       = number
+    local_ssd_count = number
+    disk_size_gb    = number
+    disk_type       = string
+    image_type      = string
+    enable_gcfs     = bool
+    auto_repair     = bool
+    auto_upgrade    = bool
+    preemptible     = bool
   }))
   description = "List of node pool for gke cluster"
 }

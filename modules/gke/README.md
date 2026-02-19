@@ -17,7 +17,6 @@ Use this module when you need a GKE foundation that includes both networking and
   - `terraform-google-modules/cloud-nat/google`
   - `terraform-google-modules/kubernetes-engine/google//modules/private-cluster`
 - Removes default GKE node pool and creates user-defined pools from `var.node_pools`.
-- Configures Gateway API channel (`CHANNEL_STANDARD`) at cluster creation.
 - Adds Artifact Registry read permission to the cluster node service account.
 - Applies dedicated taint/label logic for a `qdrant-node-pool`.
 - Expects caller-provided subnet and secondary range names; cluster is configured as zonal.

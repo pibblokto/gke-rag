@@ -1,6 +1,6 @@
 # deployments/model
 
-Terraform stack that deploys model-facing workloads and related gateway resources via Helm chart `charts/model`.
+Terraform stack that deploys model-facing workloads and related Traefik ingress resources via Helm chart `charts/model`.
 
 ## Purpose
 

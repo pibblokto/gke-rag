@@ -2,7 +2,7 @@ provider:
   name: cloudflare
 
 sources:
-  - gateway-httproute
+  - traefik-proxy
 
 domainFilters:
   - mukinabaht.com

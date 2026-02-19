@@ -1,6 +1,6 @@
 apiVersion: v2
 name: gateway-infra
-description: A Helm chart for Gateway, GatewayClass and ClusterIssuer
+description: A Helm chart for platform ingress TLS and DNS secrets
 
 type: application
 
